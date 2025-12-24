@@ -1,19 +1,21 @@
-### Git study 
+# Git study 
+로컬 작업 환경에 Git을 설치하고 Github repository와 연결하는 과정을 정리한 문서입니다.
 
-Git 세팅 
-- Git 명령어 설치 
-- Git 
+## Terminology
+1. Git: 프로그래밍 시, 작업 버전을 관리할 수 있는 프로그램
+2. Github: git으로 버전을 관리하며 다른 프로그래머와 협업하는 과정을 쉽게 도와주는 툴
 
-Branch, Commit, Push, Merge 등 예제 코드와 함께 해보기 
+## Summary
+git 설치 및 github 연결은 아래 과정으로 진행됩니다.
+1. 로컬 환경에 git 설치 및 git 계정 설정
+2. ssh 키 생성 및 github에 등록
+3. git 작업 디렉토리 세팅
+4. branch 생성
+5. commit
+6. push
+7. merge
 
-
-
-
-```
-git status # 현재 내 브랜치와 어떤 변경사항이 생겼는지 확인 
-git add . # 만들어진 변경사항을 staged 단계로 이동. 즉 commit할 항목들을 장바구니에 넣는 단계 
-git commit -m "commit-msg" # 메시지와 함께 commit. 즉 어떤 anchor 포인트를 만드는 행위 
-```
+   
 ##로컬 환경에 git 설치 
 로컬 환경에서 git을 구동할 수 있게 프로그램을 설치합니다. 
 ```
