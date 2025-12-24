@@ -57,7 +57,7 @@ ssh-keygen -t ed25519 -C "your-github-email"
 ```cat ~/.ssh/id_ed25519.pub``` 
 * 이 커맨드라인 실행 후 나오는 문자열을 복사합니다. 
 
-> [!info] 참고) 리눅스 기준 /home/user/.ssh 폴더에 ssh key가 생성되는데, 이때 파일이 두개 생성된 걸 확인할 수 있습니다. 이때 `.pub` 확장자가 붙은 파일에 있는 공개키를 등록해주어야합니다. 
+> 참고: 리눅스 기준 /home/user/.ssh 폴더에 ssh key가 생성되는데, 이때 파일이 두개 생성된 걸 확인할 수 있습니다. 이때 `.pub` 확장자가 붙은 파일에 있는 공개키를 등록해주어야합니다. 
  
 3. Github에 SSH 키 등록
 키 등록은 [이 문서](https://github.com/KennethanCeyer/tutorial-git?tab=readme-ov-file#lock-ssh)를 참고해주세요. 
