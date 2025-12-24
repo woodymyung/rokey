@@ -16,20 +16,21 @@ git 설치 및 github 연결은 아래 과정으로 진행됩니다.
 7. merge
 
    
-##로컬 환경에 git 설치 
+### 1. Git 설치 및 계정 설정 
 로컬 환경에서 git을 구동할 수 있게 프로그램을 설치합니다. 
+
 ```
 sudo apt update
 sudo apt install git -y
 ``` 
 
-`sudo apt update` : 컴퓨터에 설치된 최신 버전의 프로그램 및 명단 불러오기 
-`sudo apt install git -y` : git 설치. `-y`의 기능은 자동 허용
+* `sudo apt update` : 컴퓨터에 설치된 최신 버전의 프로그램의 명단을 불러오는 커맨드라인으로, 이 절차를 수행하지 않으면 과거 버전 주소로 가서 설치를 시도하려고 하여 설치에 실패할 수 있다.
+* `sudo apt install git -y` : git을 설치하는 커맨드라인으로, `-y`는 설치를 자동으로 허용해주기 위해 붙인다. 
 
 ```git --version``` 
-현재 어떤 버전이 설치되었는지 확인 
+* 현재 어떤 버전이 설치되었는지 확인하는 커맨드라인이다. 
 
-##Global Config & SSH 설정 
+떤 변경사항을 올릴 때 비밀번호 없이 통과할 수 있게 해줍니다. 
 누가 작업했는지 남기기 위한 절차이자, Github 서버에 내 컴퓨터를 신뢰할 수 있는 기기로 등록하는 절차입니다. 
 ###이름과 이메일 등록
 커밋(Commit) 기록에 '작성자'로 남기기 위함입니다. Github 계정 이메일과 동일하게 맞추는 것이 좋습니다. 
@@ -39,16 +40,19 @@ git config --global user.email "your-github-email"
 ```
 `--global`은 이 컴퓨터의 모든 프로젝트에 적용한다는 뜻
 
-###SSH 키 생성 및 Github 등록 
+### 2. SSH Key 생성 및 등록
+SSH(Secure Shell)는 네트워크상에서 컴퓨터에 안전하게 접속하고 원격으로 명령을 실행하거나 파일을 전송할 수 있게 해주는 보안 통신 프로토콜입니다. 이 SSH Key(Public)을 Github에 등록하여, 내 로컬 서버가 Github 서버의 데이터를 읽고 쓸 수 있는 권한을 얻게 됩니다. 
+
 1. SSH 키 생성
 ```ssh-keygen -t ed25519 -C "your-github-email"```
-`-t` : `ed25519` 암호화 타입 지정 
-`-C` : `your-github-email`이 작성된 부분을 대체 
+* `-t` : `ed25519` 암호화 타입 지정 
+* `-C` : `your-github-email`이 작성된 부분을 대체 
 
 2. 공개키 확인 및 복사
 ```cat ~/.ssh/id_ed25519.pub``` 
-이 명령어를 실행 후 나오는 문자열을 복사합니다. 
+* 이 커맨드라인 실행 후 나오는 문자열을 복사합니다. 
 
+참고) 리눅스 기준 /home/user/.ssh 폴더에 ssh key가 생성되는데, 이때 파일이 두개 생성된 걸 확인할 수 있다. `.pub` 확장자 차이가 있는데, 이는 public의 약자로 공개키를 뜻한다. 이 SSH 프로토콜은 비대칭 암호화 방식을 사용하여 Public key 와 Private key 를 한 쌍을 이루게 한다. 이때 github에 등록하는 key는 반드시 Public이어야 한다. 물론 키를 등록할 때 형식이 맞지 않아 에러가 나지만, 이 Private key를 획득하면 내 로컬 서버의 데이터를 읽고 쓸 수 있는 권한을 얻게 되기 때문에 보안에 유의해야한다. 
 3. Github에 등록:
 * Github 웹사이트 등록 -> 우측 상단 프로필 클릭 -> Settings 
 * 좌측 메뉴의 SSH and GPG keys 클릭 -> New SSH Key 버튼 클릭
