@@ -44,16 +44,20 @@ git config --global user.email "your-github-email"
 SSH(Secure Shell)는 네트워크상에서 컴퓨터에 안전하게 접속하고 원격으로 명령을 실행하거나 파일을 전송할 수 있게 해주는 보안 통신 프로토콜입니다. 이 SSH Key(Public)을 Github에 등록하여, 내 로컬 서버가 Github 서버의 데이터를 읽고 쓸 수 있는 권한을 얻게 됩니다. 
 
 1. SSH 키 생성
-```ssh-keygen -t ed25519 -C "your-github-email"```
+```
+ssh-keygen -t ed25519 -C "your-github-email"
+```
 * `-t` : `ed25519` 암호화 타입 지정 
 * `-C` : `your-github-email`이 작성된 부분을 대체 
 
-2. 공개키 확인 및 복사
+2. SSH 키(public) 확인 및 복사
 ```cat ~/.ssh/id_ed25519.pub``` 
 * 이 커맨드라인 실행 후 나오는 문자열을 복사합니다. 
 
-참고) 리눅스 기준 /home/user/.ssh 폴더에 ssh key가 생성되는데, 이때 파일이 두개 생성된 걸 확인할 수 있다. `.pub` 확장자 차이가 있는데, 이는 public의 약자로 공개키를 뜻한다. 이 SSH 프로토콜은 비대칭 암호화 방식을 사용하여 Public key 와 Private key 를 한 쌍을 이루게 한다. 이때 github에 등록하는 key는 반드시 Public이어야 한다. 물론 키를 등록할 때 형식이 맞지 않아 에러가 나지만, 이 Private key를 획득하면 내 로컬 서버의 데이터를 읽고 쓸 수 있는 권한을 얻게 되기 때문에 보안에 유의해야한다. 
-3. Github에 등록:
+> [!info] 참고) 리눅스 기준 /home/user/.ssh 폴더에 ssh key가 생성되는데, 이때 파일이 두개 생성된 걸 확인할 수 있습니다. 이때 `.pub` 확장자가 붙은 파일에 있는 공개키를 등록해주어야합니다. 
+ 
+3. Github에 SSH 키 등록
+키 등록은 [이 문서[(https://github.com/KennethanCeyer/tutorial-git?tab=readme-ov-file#lock-ssh)를 참고해주세요. 
 * Github 웹사이트 등록 -> 우측 상단 프로필 클릭 -> Settings 
 * 좌측 메뉴의 SSH and GPG keys 클릭 -> New SSH Key 버튼 클릭
 * Title: 원하는 이름 
