@@ -1,5 +1,3 @@
----
-
 # Git study
 
 로컬 작업 환경에 Git을 설치하고 Github repository와 연결하는 과정을 정리한 문서입니다.
