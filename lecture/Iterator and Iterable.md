@@ -1,22 +1,13 @@
-# Iterator and Iterable 
-Iterator, Iterable 개념을 배우기 전에 Lazy evaluation이라는 철학 및 방법론을 알아보자. 
-### Lazy evalution
-필요한 시점에 연산을 실행하여 메모리를 아끼는 방식 및 문법을 아울러 뜻한다. 
-#### 예시 
-```python 
-original_list = [1, 2, 3, 4, 5]
-converted_list = []
-for i in original_list: 
-    i = i ** 2
-    converted_list.append(i)
-``` 
-```python 
-original_list = [1, 2, 3, 4, 5]
-map_object = map(lambda x : x**2, original_list)
-gen_iter = (x**2 for x in original_list)
-```
-리스트의 각 요소를 제곱한 결과를 반환해야하는 프로그램이 있다고 가정하자. 첫 번째 코드의 경우 `original_list`의 모든 요소에 대해 미리 연산을 수행하여 `converted_list`에 저장해둔다. 따라서 원소 데이터가 이미 10개의 자리를 차지한다. 반면 두 번째 코드의 경우 `map` 메소드를 사용하여 아직 어떤 리스트로 결과를 반환하지 않았다. 다만 어떤 계산식을 가진 설계도만 가지고 있는 상태이다. 따라서 두 번째 방식이 첫 번째 방식보다 더 적은 메모리를 차지한다. 이때 map 메소드를 사용하여 생성된 객체는 `iterator` 이다. 
+# Iterator 
+Iterator 관련 개념을 배우기 전에 Lazy evaluation에 대해 알아보자. 
+## Lazy evalution
+- 엄밀한 정의(Feat. Gemini): Lazy Evaluation은 연산 요청을 'Thunk(썽크)'로 감싸서 지연시키고(Deferral), 실제 값이 필요할 때(Forcing) 연산을 수행하며, 그 결과를 메모리에 캐싱(Memoization)하여 중복 연산을 방지하는 'Call-by-need' 평가 전략이다.
+- 비유적인 정의: 어떤 자연수의 제곱을 계산해야 할 때, 모든 자연수의 제곱을 미리 계산한 결과를 저장해두는 방식과 대조적으로 필요할 때만 계산기를 꺼내 값을 구하는 방식
 
+#### 파이썬에서의 Lazy evaluation
+파이썬은 언어 전체가 Lazy한 언어는 아니지만, iterator를 통해 lazy evaluation 의 철학(?)을 구현할 수 있다. lazy evaluation 으로 분류되는 연산은 연산 결과를 메모리에 미리 올리는 대신, 결과를 생성할 방법과 현재 상태를 포장해둔다. generator(`yield`), iterator 객체(e.g. `map`), `range` 객체가 그 예시이다. 
+
+## Iterator
 ### Iterable vs Iterator 
 `Iter`라는 단어에서 유추할 수 있듯이 반복적인 특징을 가졌음을 유추할 수 있다. 여러 문서를 읽고 이해한 바에 따르면, `Iterable`과 `Iterator`는 모두 반복되는 성질을 가지는 객체인데, 차이점은 `Iterable`은 반복될 수 있는 성질을 가졌지만 값을 하나씩 반환하는 능력이 없으며, `Iterator`가 될 잠재력이 있는 객체이다. 반면 `Iterator`는 실제로 값을 하나씩 반환하는 객체로, 모든 반환이 끝나면 그 값들이 소멸되는 특징이 있다. 
 </br>
@@ -24,6 +15,7 @@ gen_iter = (x**2 for x in original_list)
 - **iterable**: An object capable of returning its members one at a time. Examples of iterables include all sequence types (such as `list`, `str`, and `tuple`) and some non-sequence types like `dict`, file objects, and objects of any classes you define with an `__iter__()` method or with a `__getitem__()` method that implements sequence semantics. 
 Iterables can be used in a `for` loop and in many other places where a sequence is needed(e.g. `zip()`, `map()`). When an iterable object is passed as an argument to the built-in function `iter()`, it returns an iterator for the object. 
 - **iterator**: An object representing a stream of data. Repeated calls to the iterator's `__next__()` method (or passing it to the built-in function `next()`) return successive items in the stream. When no more data are available a `StopIteration` exception is raised instead. At this point, the iterator object is exhausted and any further calls to its `__next__()` method just raise `StopIteration` again. Iterators are required to have an `__iter__()` method that returns the iterator object itself so every iterator is also iterable and may be sued in most places where other iterables are accepted. ... A container object(such as a `list`) produces a fresh new iterator each time you pass it to the `iter()` function or use it in a `for` loop. Attempting this with an iterator will just return the same exhausted iterator object used in the previous pass, making it appear like an empty container. 
+    - Reddit에서 좀 더 직관적인 설명이 있어 첨부: 이터레이터는 상태를 가지고 있어: `next`을 할 때마다, 얻는 아이템은 이터레이터에 의해 잊혀져. 이건 아주 특정한 종류의 객체인데, 아주 특정한, 잘 정의된 동작을 해. 이터러블은 그런 제약이 없어. 어떤 종류의 객체든 될 수 있는데, 길이를 가질 수도 있고, 소모될 수도 있고, 인덱싱이 가능할 수도 있고, 아닐 수도 있고, 등등. "이터러블"하게 만드는 유일한 건 `__iter__` 메서드를 정의한다는 거야. 그래서 `iter(thing)` 을 해서 실제 이터레이터를 얻을 수 있어 (알 수 없거나 복잡한 동작을 하는 일반 객체에서, 잘 정의되고 제한된 동작을 하는 아주 특정한 이터레이터 객체로 변환하는 거지).
 
 그렇다면 `for` 구문 안에서 일어나는 일을 살펴보자. 
 ```python 
@@ -43,21 +35,13 @@ for i in iterator:
 3. 소진: `position`이 마지막에 도달하며 순회가 끝난다. 이때 이터레이터 객체는 버려지지 않은 채, 변수에 할당되어있으나 소진된 상태로 남는다.
 4. 결과: 다시 `for` 문을 돌려도 `__iter__()`는 여전히 마지막 `position`에 도달한 `self`를 반환하므로, 아무 값도 나오지 않는다. 
 
-- Iteratior has a state. Whenever it executes `next`, the item get by iterator is forgotten. Iterator, a special obejct, do the well defiend works. 
-- list 는 iterable 이므로, iterator 객체를 만들 권한을 가지고 있음. 따라서, 
-```python 
-list = [1, 2, 3] # type(list) = list(iterable)
-iterator = iter(list) # type(iterator) = iterator
-```
-
-- iterable 는 영구적으로 사용 가능
-- iterator는 iterable을 이용하여 만든 객체로, 값을 하나씩 반환하며 한번 반환한 값은 그 객체에서 소모되는 성질을 가지고 있다. 
-
-
-- iterable 객체는 특정 Class 로부터 생성되었는데, 이 클래스 안에는 `__iter__()`라는 메서드가 정의되어있고, 이 메서드를 호출하면 iterator 객체를 반환한다. 
-
-
+## Generator
 - generator: A function that returns a generator iterator. It looks like a noraml function except that it cotains `yield` expressions for producing a series of values usable in a for-loop or that can be retrieved one at a time with the `next()` function.
 - generator iterator: An object created by a `generator` function. 
     - Each `yield` temporarily suspends processing, remembering the execution state (including local variables and pending tryp-statements). When the generator iterator resumes, it picks up where it left off. 
 - generator exrpession: An expression that returns an iterator. It looks like a normal expression followed by a for clause defining a loop variable, range, and an optional if clause. THe combined expression generates values for an enclosing funciton: 
+### Generator comprehension
+```python
+
+```
+#### map vs generator comprehension 
