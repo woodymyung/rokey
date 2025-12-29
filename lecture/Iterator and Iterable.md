@@ -1,13 +1,13 @@
 # Iterator 
 Iterator 관련 개념을 배우기 전에 Lazy evaluation에 대해 알아보자. 
-## Lazy evalution
+## 0. Lazy evalution
 - 엄밀한 정의(Feat. Gemini): Lazy Evaluation은 연산 요청을 'Thunk(썽크)'로 감싸서 지연시키고(Deferral), 실제 값이 필요할 때(Forcing) 연산을 수행하며, 그 결과를 메모리에 캐싱(Memoization)하여 중복 연산을 방지하는 'Call-by-need' 평가 전략이다.
 - 비유적인 정의: 어떤 자연수의 제곱을 계산해야 할 때, 모든 자연수의 제곱을 미리 계산한 결과를 저장해두는 방식과 대조적으로 필요할 때만 계산기를 꺼내 값을 구하는 방식
 
 #### 파이썬에서의 Lazy evaluation
 파이썬은 언어 전체가 Lazy한 언어는 아니지만, iterator를 통해 lazy evaluation 의 철학(?)을 구현할 수 있다. lazy evaluation 으로 분류되는 연산은 연산 결과를 메모리에 미리 올리는 대신, 결과를 생성할 방법과 현재 상태를 포장해둔다. generator(`yield`), iterator 객체(e.g. `map`), `range` 객체가 그 예시이다. 
 
-## Iterator
+## 1. Iterator
 ### Iterable vs Iterator 
 `Iter`라는 단어에서 유추할 수 있듯이 반복적인 특징을 가졌음을 유추할 수 있다. 여러 문서를 읽고 이해한 바에 따르면, `Iterable`과 `Iterator`는 모두 반복되는 성질을 가지는 객체인데, 차이점은 `Iterable`은 반복될 수 있는 성질을 가졌지만 값을 하나씩 반환하는 능력이 없으며, `Iterator`가 될 잠재력이 있는 객체이다. 반면 `Iterator`는 실제로 값을 하나씩 반환하는 객체로, 모든 반환이 끝나면 그 값들이 소멸되는 특징이 있다. 
 </br>
@@ -35,12 +35,12 @@ for i in iterator:
 3. 소진: `position`이 마지막에 도달하며 순회가 끝난다. 이때 이터레이터 객체는 버려지지 않은 채, 변수에 할당되어있으나 소진된 상태로 남는다.
 4. 결과: 다시 `for` 문을 돌려도 `__iter__()`는 여전히 마지막 `position`에 도달한 `self`를 반환하므로, 아무 값도 나오지 않는다. 
 
-## Generator
+## 2. Generator
 - generator: A function that returns a generator iterator. It looks like a noraml function except that it cotains `yield` expressions for producing a series of values usable in a for-loop or that can be retrieved one at a time with the `next()` function.
 - generator iterator: An object created by a `generator` function. 
     - Each `yield` temporarily suspends processing, remembering the execution state (including local variables and pending tryp-statements). When the generator iterator resumes, it picks up where it left off. 
 - generator exrpession: An expression that returns an iterator. It looks like a normal expression followed by a for clause defining a loop variable, range, and an optional if clause. THe combined expression generates values for an enclosing funciton: 
-### Generator comprehension
+### 2.1. Generator comprehension
 ```python
 
 ```
