@@ -13,6 +13,7 @@ for i in original_list:
 ```python 
 original_list = [1, 2, 3, 4, 5]
 map_object = map(lambda x : x**2, original_list)
+gen_iter = (x**2 for x in original_list)
 ```
 리스트의 각 요소를 제곱한 결과를 반환해야하는 프로그램이 있다고 가정하자. 첫 번째 코드의 경우 `original_list`의 모든 요소에 대해 미리 연산을 수행하여 `converted_list`에 저장해둔다. 따라서 원소 데이터가 이미 10개의 자리를 차지한다. 반면 두 번째 코드의 경우 `map` 메소드를 사용하여 아직 어떤 리스트로 결과를 반환하지 않았다. 다만 어떤 계산식을 가진 설계도만 가지고 있는 상태이다. 따라서 두 번째 방식이 첫 번째 방식보다 더 적은 메모리를 차지한다. 이때 map 메소드를 사용하여 생성된 객체는 `iterator` 이다. 
 
@@ -22,6 +23,7 @@ map_object = map(lambda x : x**2, original_list)
 파이썬 공식 문서에 정의된 내용을 살펴보자. 
 - **iterable**: An object capable of returning its members one at a time. Examples of iterables include all sequence types (such as `list`, `str`, and `tuple`) and some non-sequence types like `dict`, file objects, and objects of any classes you define with an `__iter__()` method or with a `__getitem__()` method that implements sequence semantics. 
 Iterables can be used in a `for` loop and in many other places where a sequence is needed(e.g. `zip()`, `map()`). When an iterable object is passed as an argument to the built-in function `iter()`, it returns an iterator for the object. 
+- **iterator**: An object representing a stream of data. Repeated calls to the iterator's `__next__()` method (or passing it to the built-in function `next()`) return successive items in the stream. When no more data are available a `StopIteration` exception is raised instead. At this point, the iterator object is exhausted and any further calls to its `__next__()` method just raise `StopIteration` again. Iterators are required to have an `__iter__()` method that returns the iterator object itself so every iterator is also iterable and may be sued in most places where other iterables are accepted. ... A container object(such as a `list`) produces a fresh new iterator each time you pass it to the `iter()` function or use it in a `for` loop. Attempting this with an iterator will just return the same exhausted iterator object used in the previous pass, making it appear like an empty container. 
 
 그렇다면 `for` 구문 안에서 일어나는 일을 살펴보자. 
 ```python 
@@ -38,7 +40,7 @@ for i in iterator:
 ```
 1. `__iter__` 호출: `for` 문이 시작되자마자 객체의 `__iter()__` 메소드를 호출한다. 그러나 이때 새로운 iterator 객체가 생성되어 반환되는 게 아니라, 자기 자신(`self`)을 반환한다. 
 2. 순회: 자기 자신(`self`)의 `__next__()`를 호출하며 값을 가져온다. 이때 내부의 `position`이 변경된다. 
-3. 소진: `position`이 마지막에 도달하며 순회가 끝난다. 이때 이터레이터 객체는 버려지지 않은 채, 변수(`iterable`)에 할당되었으나 소진된 상태로 남는다.
+3. 소진: `position`이 마지막에 도달하며 순회가 끝난다. 이때 이터레이터 객체는 버려지지 않은 채, 변수에 할당되어있으나 소진된 상태로 남는다.
 4. 결과: 다시 `for` 문을 돌려도 `__iter__()`는 여전히 마지막 `position`에 도달한 `self`를 반환하므로, 아무 값도 나오지 않는다. 
 
 - Iteratior has a state. Whenever it executes `next`, the item get by iterator is forgotten. Iterator, a special obejct, do the well defiend works. 
