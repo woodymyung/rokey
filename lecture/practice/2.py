@@ -1,13 +1,18 @@
-import re
+def fib_generator(): 
+    i = 1
+    result = 1
+    while True: 
+        if i == 1 or i == 2: 
+            i = i+1
+            yield result
+        else: 
+            result = (i-1) + (i-2)
+            i = i+1
+            yield result
 
-text = """
-Info: Operation success
-Error: File not found
-Warning: Disk full
-Error: Network timeout
-"""
-
-pattern = re.compile('^Error.*', re.MULTILINE)
-result = pattern.findall(text)
-
-print(result)
+g = fib_generator()
+print(next(g))
+print(next(g))
+print(next(g))
+print(next(g))
+print(next(g))

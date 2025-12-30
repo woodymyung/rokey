@@ -1,7 +1,28 @@
-import re
+class CyclicIterator: 
+    def __init__(self, data):
+        self.data = data
+        self.position = 0 
+    
+    def __iter__(self):
+        return self 
+    
+    def __next__(self): 
+        if self.position + 1 >= len(self.data): 
+            self.position = self.position % 3
+            result = self.data[self.position]
+            self.position += 1
+            return result
+        result = self.data[self.position]
+        self.position += 1
+        return result
 
-text = "Call me at 010-1234-5678 or 010-987-6543."
+data = ['A', 'B', 'C']
+iter = CyclicIterator(data)
 
-pattern = r'010-\d{3,4}-\d{4}'
-result = re.findall(pattern, text)
-print(result)
+print(next(iter))
+print(next(iter))
+print(next(iter))
+print(next(iter))
+print(next(iter))
+print(next(iter))
+print(next(iter))
